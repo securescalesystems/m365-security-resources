@@ -10,7 +10,7 @@
 
 This repository contains production-ready security templates, KQL detection queries, Conditional Access policy specifications, and Microsoft Sentinel analytics rule configurations for organisations running Microsoft 365 and Microsoft Entra ID.
 
-Every resource in this repository has been deployed and validated in a live Microsoft 365 environment. These are not theoretical controls — they are operational security configurations tested against real sign-in telemetry and identity data.
+Every resource in this repository has been deployed and validated in a live Microsoft 365 environment. These are not theoretical controls, they are operational security configurations tested against real sign-in telemetry and identity data.
 
 Organisations can use these resources to:
 
