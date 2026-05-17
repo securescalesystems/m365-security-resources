@@ -1,0 +1,18 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Risky Sign-in Detection
+// Purpose: Detect medium and high risk sign-ins flagged by
+//          Entra Identity Protection
+// Data Source: SigninLogs
+// Licensing: Requires Entra ID P2
+// Note: Table name is SigninLogs (lowercase i) not SignInLogs
+// Expected Result: Zero results indicates no active identity risk
+// ============================================================
+
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where RiskLevelDuringSignIn in ("medium", "high")
+| project TimeGenerated, UserPrincipalName, AppDisplayName,
+    RiskLevelDuringSignIn, RiskDetail, RiskState,
+    Location, ResultType, ConditionalAccessStatus
+| order by TimeGenerated desc
