@@ -1,0 +1,23 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: MFA Fatigue Detection
+// Purpose: Identify MFA push bombing attempts
+//          Three or more MFA failures within one hour per user
+//          is the trigger threshold
+// Data Source: SigninLogs
+// Note: Table name is SigninLogs (lowercase i) not SignInLogs
+// Expected Result: Zero results indicates no active MFA fatigue attack
+// ============================================================
+
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where AuthenticationRequirement == "multiFactorAuthentication"
+| where ResultType != "0"
+| summarize MFAFailureCount = count() by
+    UserPrincipalName,
+    AppDisplayName,
+    ResultType,
+    ResultDescription,
+    bin(TimeGenerated, 1h)
+| where MFAFailureCount >= 3
+| order by MFAFailureCount desc
