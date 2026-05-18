@@ -1,0 +1,18 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Conditional Access Failure Detection
+// Purpose: Surface CA policy failures and potential bypass attempts
+// Data Source: SigninLogs
+// Note: Table name is SigninLogs (lowercase i) not SignInLogs
+// Expected Result: Zero results confirms CA policies are not
+//                  being bypassed
+// Action: Any results warrant immediate investigation
+// ============================================================
+
+SigninLogs
+| where TimeGenerated > ago(7d)
+| where ConditionalAccessStatus == "failure"
+| project TimeGenerated, UserPrincipalName, AppDisplayName,
+    ConditionalAccessStatus, ResultType, ResultDescription,
+    Location, IPAddress
+| order by TimeGenerated desc
