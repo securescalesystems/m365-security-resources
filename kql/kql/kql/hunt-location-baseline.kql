@@ -1,0 +1,15 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Sign-In Location Baseline
+// Purpose: Establish and monitor expected sign-in geographies
+// Data Source: SigninLogs
+// Note: Table name is SigninLogs (lowercase i) not SignInLogs
+// Expected Result: All sign-ins from expected country codes
+// Action: Investigate any location outside your expected countries
+// ============================================================
+
+SigninLogs
+| where TimeGenerated > ago(7d)
+| summarize Count = count(), LastEvent = max(TimeGenerated)
+    by Location
+| order by Count desc
