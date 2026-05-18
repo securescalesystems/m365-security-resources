@@ -1,0 +1,15 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Failed Authentication Events
+// Purpose: Identify and baseline all failed sign-in attempts
+// Data Source: SigninLogs
+// Note: Table name is SigninLogs (lowercase i) not SignInLogs
+// Expected Result: Zero results indicates a clean baseline
+// ============================================================
+
+SigninLogs
+| where TimeGenerated > ago(24h)
+| where ResultType != "0"
+| project TimeGenerated, UserPrincipalName, AppDisplayName,
+    ResultType, ResultDescription, Location, IPAddress
+| order by TimeGenerated desc
