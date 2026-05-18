@@ -1,0 +1,14 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Non-Interactive Sign-In Review
+// Purpose: Surface background authentication events from service
+//          accounts, apps, and automated processes
+// Data Source: AADNonInteractiveUserSignInLogs
+// Expected Result: Background auth events - review for anomalies
+// ============================================================
+
+AADNonInteractiveUserSignInLogs
+| where TimeGenerated > ago(24h)
+| project TimeGenerated, UserPrincipalName, AppDisplayName,
+    IPAddress, Location, ResultType, ResultDescription
+| order by TimeGenerated desc
