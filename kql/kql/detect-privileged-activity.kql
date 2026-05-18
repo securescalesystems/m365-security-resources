@@ -1,0 +1,17 @@
+// ============================================================
+// Secure Scale Systems Ltd - KQL Detection Library
+// Query: Privileged Account Activity
+// Purpose: Detect role assignments, admin operations, and
+//          service principal activity
+// Data Source: AuditLogs
+// Expected Result: Any human-initiated role changes warrant review
+// ============================================================
+
+AuditLogs
+| where TimeGenerated > ago(7d)
+| where Category == "RoleManagement"
+    or OperationName contains "role"
+    or OperationName contains "service principal"
+| project TimeGenerated, OperationName, InitiatedBy,
+    TargetResources, Result
+| order by TimeGenerated desc
